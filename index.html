@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KompriMAI | Moderní weby s umělou inteligencí</title>
+    <meta name="description" content="Profesionální webové stránky s AI pro malé a střední firmy. Rychlé dodání, férové ceny, automatizace.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #06b6d4;
+            --dark: #1e1b4b;
+            --light: #f8fafc;
+            --gray: #64748b;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Navigation */
+        nav {
+            background: white;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-size: 1.8em;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 150px 0 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            opacity: 0.3;
+        }
+        
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero h1 span {
+            color: var(--accent);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3em;
+            opacity: 0.9;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-badges {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 18px 50px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1em;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(6, 182, 212, 0.4);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--dark);
+            margin-left: 20px;
+        }
+        
+        /* Problem/Solution */
+        .problem {
+            padding: 80px 0;
+            background: white;
+        }
+        
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+        
+        .problem-card {
+            text-align: center;
+            padding: 40px 30px;
+            border-radius: 20px;
+            background: var(--light);
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .problem-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .problem-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        
+        .problem-card h3 {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .problem-card p {
+            color: var(--gray);
+        }
+        
+        /* Pricing */
+        .pricing {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #f0f4ff 0%, #f8fafc 100%);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: var(--gray);
+            font-size: 1.1em;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        
+        .pricing-card {
+            background: white;
+            border-radius: 24px;
+            padding: 50px 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            position: relative;
+            transition: transform 0.3s;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .pricing-card.featured {
+            border: 3px solid var(--primary);
+            transform: scale(1.05);
+        }
+        
+        .pricing-card.featured:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 8px 25px;
+            border-radius: 50px;
+            font-size: 0.85em;
+            font-weight: 700;
+        }
+        
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .pricing-header h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        
+        .price {
+            font-size: 3.5em;
+            font-weight: 800;
+            color: var(--dark);
+        }
+        
+        .price span {
+            font-size: 0.4em;
+            font-weight: 400;
+            color: var(--gray);
+        }
+        
+        .delivery-time {
+            display: inline-block;
+            background: #dcfce7;
+            color: #166534;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        
+        .features {
+            list-style: none;
+            margin: 30px 0;
+        }
+        
+        .features li {
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .features li::before {
+            content: "✓";
+            color: #22c55e;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .btn-pricing {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 16px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+        
+        .btn-outline {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-filled {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-filled:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* Process */
+        .process {
+            padding: 100px 0;
+            background: white;
+        }
+        
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .process-step {
+            text-align: center;
+            position: relative;
+        }
+        
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: 800;
+            margin: 0 auto 20px;
+        }
+        
+        .process-step h4 {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .process-step p {
+            color: var(--gray);
+            font-size: 0.95em;
+        }
+        
+        /* Upsell */
+        .upsell {
+            padding: 80px 0;
+            background: var(--dark);
+            color: white;
+        }
+        
+        .upsell-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .upsell-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 35px;
+            transition: all 0.3s;
+        }
+        
+        .upsell-card:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-5px);
+        }
+        
+        .upsell-card h4 {
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .upsell-price {
+            font-size: 2em;
+            font-weight: 700;
+            margin: 20px 0;
+        }
+        
+        .upsell-price span {
+            font-size: 0.5em;
+            opacity: 0.7;
+        }
+        
+        /* Contact */
+        .contact {
+            padding: 100px 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .contact h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .contact-item a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+        }
+        
+        .contact-item a:hover {
+            text-decoration: underline;
+        }
+        
+        .cta-final {
+            display: inline-block;
+            background: white;
+            color: var(--primary);
+            padding: 20px 60px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.2em;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+        
+        .cta-final:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        /* Footer */
+        footer {
+            background: #0f0a1e;
+            color: rgba(255,255,255,0.6);
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2em;
+            }
+            
+            .hero-badges {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn-secondary {
+                margin-left: 0;
+                margin-top: 15px;
+            }
+            
+            .pricing-card.featured {
+                transform: none;
+            }
+            
+            .pricing-card.featured:hover {
+                transform: translateY(-10px);
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">KompriMAI</div>
+                <ul class="nav-links">
+                    <li><a href="#sluzby">Služby</a></li>
+                    <li><a href="#cenik">Ceník</a></li>
+                    <li><a href="#proces">Jak to funguje</a></li>
+                    <li><a href="#kontakt">Kontakt</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Váš web přivede<br><span>zákazníky do 72 hodin</span></h1>
+            <p class="hero-subtitle">Moderní webové stránky pro malé firmy, které prodávají. Bez starostí, za férovou cenu, s výsledky měřitelnými v korunách.</p>
+            <div class="hero-badges">
+                <div class="badge">⚡ Dodání do 72 hodin</div>
+                <div class="badge">🤖 S AI funkcemi</div>
+                <div class="badge">💰 Od 4 990 Kč</div>
+            </div>
+            <a href="#kontakt" class="btn btn-primary">Nezávazná konzultace ZDARMA</a>
+            <a href="#cenik" class="btn btn-secondary">Zobrazit ceník</a>
+        </div>
+    </section>
+
+    <section class="problem" style="background: linear-gradient(135deg, #f0f4ff 0%, #f8fafc 100%);">
+        <div class="container">
+            <div class="section-title">
+                <h2>4 důvody, proč si vybrat nás</h2>
+                <p>Co nás odlišuje od konkurence</p>
+            </div>
+            <div class="problem-grid">
+                <div class="problem-card" style="border-left: 4px solid #22c55e;">
+                    <div class="problem-icon">⚡</div>
+                    <h3>Dodání do 72 hodin</h3>
+                    <p>Ne čekáte týdny nebo měsíce. Váš web je hotový za 3 dny. Maximálně.</p>
+                </div>
+                <div class="problem-card" style="border-left: 4px solid #3b82f6;">
+                    <div class="problem-icon">🤖</div>
+                    <h3>AI funkce v ceně</h3>
+                    <p>Chatbot, automatické formuláře, SEO optimalizace. To ostatní účtují zvlášť.</p>
+                </div>
+                <div class="problem-card" style="border-left: 4px solid #f59e0b;">
+                    <div class="problem-icon">💰</div>
+                    <h3>Cena od 4 990 Kč</h3>
+                    <p>Polovina ceny oproti agenturám. Kvalita bez příplatku za značku.</p>
+                </div>
+                <div class="problem-card" style="border-left: 4px solid #8b5cf6;">
+                    <div class="problem-icon">📈</div>
+                    <h3>Výsledky měřitelné</h3>
+                    <p>Google Analytics, konverzní tracking. Vidíte, kolik vám web vydělává.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="problem" id="sluzby">
+        <div class="container">
+            <div class="section-title">
+                <h2>Máte některý z těchto problémů?</h2>
+                <p>Pomáháme firmám, které...</p>
+            </div>
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <div class="problem-icon">❌</div>
+                    <h3>Nemají web vůbec</h3>
+                    <p>Potenciální zákazníci vás online nenajdou. Ztrácíte zakázky každý den.</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">📱</div>
+                    <h3>Mají zastaralý web</h3>
+                    <p>Web nefunguje na mobilech, vypadá špatně a odrazuje návštěvníky.</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">💸</div>
+                    <h3>Platí moc za málo</h3>
+                    <p>Agentury chtějí desítky tisíc a dodávají měsíce. To je přežitek.</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">🤷</div>
+                    <h3>Nevědí jak na marketing</h3>
+                    <p>Web je, ale nikdo na něj nechodí. Chybí SEO, obsah, automatizace.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing" id="cenik">
+        <div class="container">
+            <div class="section-title">
+                <h2>Transparentní ceník</h2>
+                <p>Žádné skryté poplatky. Vše v ceně.</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>🌟 START</h3>
+                        <div class="price">4 990 Kč</div>
+                        <span>Jednorázově</span>
+                        <div class="delivery-time">Dodání: 48-72 hodin</div>
+                    </div>
+                    <ul class="features">
+                        <li>Jednostránkový web (landing page)</li>
+                        <li>Responzivní design (mobil, tablet)</li>
+                        <li>Kontaktní formulář</li>
+                        <li>SEO základní nastavení</li>
+                        <li>Hosting na 1 rok ZDARMA</li>
+                        <li>SSL certifikát</li>
+                        <li>2 kola úprav</li>
+                    </ul>
+                    <a href="#kontakt" class="btn-pricing btn-outline">Nezávazně poptat</a>
+                </div>
+
+                <div class="pricing-card featured">
+                    <div class="popular-badge">Nejoblíbenější</div>
+                    <div class="pricing-header">
+                        <h3>💼 BUSINESS</h3>
+                        <div class="price">9 990 Kč</div>
+                        <span>Jednorázově</span>
+                        <div class="delivery-time">Dodání: 3-5 dní</div>
+                    </div>
+                    <ul class="features">
+                        <li>Web do 5 stran</li>
+                        <li>Galerie, služby, reference</li>
+                        <li>Blog připravený na AI obsah</li>
+                        <li>Google Analytics</li>
+                        <li>Rychlostní optimalizace</li>
+                        <li>Hosting na 1 rok ZDARMA</li>
+                        <li>SSL certifikát</li>
+                        <li>3 kola úprav</li>
+                    </ul>
+                    <a href="#kontakt" class="btn-pricing btn-filled">Nezávazně poptat</a>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>👑 PREMIUM</h3>
+                        <div class="price">19 990 Kč</div>
+                        <span>Jednorázově</span>
+                        <div class="delivery-time">Dodání: 7-10 dní</div>
+                    </div>
+                    <ul class="features">
+                        <li>Web do 10 stran</li>
+                        <li>E-shop (do 50 produktů)</li>
+                        <li>AI chatbot na webu</li>
+                        <li>Newsletter integrace</li>
+                        <li>Plná SEO optimalizace</li>
+                        <li>Hosting na 1 rok ZDARMA</li>
+                        <li>SSL certifikát</li>
+                        <li>Neomezené úpravy</li>
+                        <li>Prioritní podpora</li>
+                    </ul>
+                    <a href="#kontakt" class="btn-pricing btn-outline">Nezávazně poptat</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="upsell">
+        <div class="container">
+            <div class="section-title" style="color: white;">
+                <h2>AI automatizace pro váš byznys</h2>
+                <p style="opacity: 0.8;">Po webu můžete využít naše měsíční služby</p>
+            </div>
+            <div class="upsell-grid">
+                <div class="upsell-card">
+                    <h4>🤖 AI Chatbot Pro</h4>
+                    <p>Inteligentní chatbot, který odpovídá na dotazy zákazníků 24/7 a sbírá kontakty.</p>
+                    <div class="upsell-price">1 490 Kč<span>/měsíc</span></div>
+                </div>
+                <div class="upsell-card">
+                    <h4>✍️ AI Obsah</h4>
+                    <p>4 blog články a 8 sociálních příspěvků měsíčně. Obsah, který prodává.</p>
+                    <div class="upsell-price">2 990 Kč<span>/měsíc</span></div>
+                </div>
+                <div class="upsell-card">
+                    <h4>📈 AI Marketing</h4>
+                    <p>Správa Google Ads, newsletter kampaně, SEO monitoring a měsíční reporty.</p>
+                    <div class="upsell-price">4 990 Kč<span>/měsíc</span></div>
+                </div>
+                <div class="upsell-card">
+                    <h4>⚙️ AI Automatizace</h4>
+                    <p>Automatická fakturace, napojení systémů, reporty z dat. Ušetřete hodiny času.</p>
+                    <div class="upsell-price">3 490 Kč<span>/měsíc</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="process" id="proces">
+        <div class="container">
+            <div class="section-title">
+                <h2>Jak to funguje</h2>
+                <p>Od konzultace k webu za 3 jednoduché kroky</p>
+            </div>
+            <div class="process-grid">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h4>Nezávazná konzultace</h4>
+                    <p>Probereme vaše potřeby a navrhneme řešení na míru. Zdarma a bez závazku.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h4>Vývoj webu</h4>
+                    <p>Postavíme váš web s moderními technologiemi a AI funkcemi. Rychle a kvalitně.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h4>Spuštění & podpora</h4>
+                    <p>Web spustíme, zaškolíme vás a poskytneme podporu. Můžete růst online.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="problem" style="background: white;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Často kladené otázky</h2>
+                <p>Vše co potřebujete vědět</p>
+            </div>
+            <div class="problem-grid" style="text-align: left;">
+                <div class="problem-card" style="text-align: left; align-items: flex-start;">
+                    <h3 style="margin-bottom: 15px; color: var(--primary);">⚡ Jak je možné dodat web za 72 hodin?</h3>
+                    <p>Používáme moderní technologie a AI, které nám umožňují pracovat rychleji než tradiční agentury. Máme také připravené šablony, které přizpůsobíme vašim potřebám.</p>
+                </div>
+                <div class="problem-card" style="text-align: left; align-items: flex-start;">
+                    <h3 style="margin-bottom: 15px; color: var(--primary);">💰 Proč jste tak levní?</h3>
+                    <p>Nemáme drahé kanceláře ani armádu zaměstnanců. Pracujeme efektivně s AI a naše náklady jsou minimální. Kvalitu ale nešetříme.</p>
+                </div>
+                <div class="problem-card" style="text-align: left; align-items: flex-start;">
+                    <h3 style="margin-bottom: 15px; color: var(--primary);">🤖 Co jsou ty AI funkce?</h3>
+                    <p>Chatbot, který odpovídá na dotazy 24/7, automatické formuláře, SEO optimalizace, generování obsahu. To vše je už v základní ceně.</p>
+                </div>
+                <div class="problem-card" style="text-align: left; align-items: flex-start;">
+                    <h3 style="margin-bottom: 15px; color: var(--primary);">📊 Jak budu vědět, že web funguje?</h3>
+                    <p>Nastavíme vám Google Analytics, uvidíte kolik lidí na web chodí, odkud přicházejí a co na něm dělají. Měřitelné výsledky.</p>
+                </div>
+                <div class="problem-card" style="text-align: left; align-items: flex-start;">
+                    <h3 style="margin-bottom: 15px; color: var(--primary);">🔄 Co když se mi web nelíbí?</h3>
+                    <p>Počet kol úprav je v ceně (2-3 kola podle balíčku). Pokud ani pak nebudete spokojení, vrátíme vám peníze. Garance spokojenosti.</p>
+                </div>
+                <div class="problem-card" style="text-align: left; align-items: flex-start;">
+                    <h3 style="margin-bottom: 15px; color: var(--primary);">🚀 A co potom?</h3>
+                    <p>Web předáme s kompletní dokumentací. Můžete si ho spravovat sami, nebo využít naše měsíční služby (AI obsah, marketing, podpora).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Garance -->
+    <section class="process" style="background: linear-gradient(135deg, #dcfce7 0%, #f0fdf4 100%);">
+        <div class="container">
+            <div class="section-title">
+                <h2 style="color: #166534;">✅ Naše garance</h2>
+                <p style="color: #166534;">Neberte žádné riziko</p>
+            </div>
+            <div class="process-grid">
+                <div class="process-step">
+                    <div class="step-number" style="background: linear-gradient(135deg, #22c55e, #16a34a);">1</div>
+                    <h4>100% vrácení peněz</h4>
+                    <p>Pokud nebudete spokojení do 14 dnů, vrátíme vám celou částku.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number" style="background: linear-gradient(135deg, #22c55e, #16a34a);">2</div>
+                    <h4>Podpora 24/7</h4>
+                    <p>Technické problémy řešíme okamžitě, non-stop.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number" style="background: linear-gradient(135deg, #22c55e, #16a34a);">3</div>
+                    <h4>Záruka rychlosti</h4>
+                    <p>Pokud nedodáme do 72 hodin, dostanete 20% slevu.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Proof -->
+    <section style="background: white; padding: 60px 0;">
+        <div class="container" style="text-align: center;">
+            <h3 style="font-size: 1.3em; margin-bottom: 30px; color: var(--gray);">Důvěřují nám firmy z celé ČR</h3>
+            <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; opacity: 0.6;">
+                <span style="font-size: 1.1em;">🏠 Instalatéři</span>
+                <span style="font-size: 1.1em;">✂️ Kadeřnictví</span>
+                <span style="font-size: 1.1em;">🔨 Truhláři</span>
+                <span style="font-size: 1.1em;">🍕 Restaurace</span>
+                <span style="font-size: 1.1em;">💼 Konzultanti</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="kontakt">
+        <div class="container">
+            <h2>Pojďme začít spolupráci</h2>
+            <p style="opacity: 0.9; font-size: 1.2em; margin-bottom: 40px;">První konzultace je ZDARMA a nezávazná</p>
+            
+            <!-- Quick Contact Form -->
+            <div style="background: rgba(255,255,255,0.1); padding: 40px; border-radius: 20px; max-width: 600px; margin: 0 auto 40px;">
+                <form onsubmit="event.preventDefault(); alert('Děkujeme! Ozveme se do 2 hodin.');" style="display: flex; flex-direction: column; gap: 20px;">
+                    <input type="text" placeholder="Vaše jméno" style="padding: 15px; border-radius: 10px; border: none; font-size: 1em;" required>
+                    <input type="email" placeholder="Váš e-mail" style="padding: 15px; border-radius: 10px; border: none; font-size: 1em;" required>
+                    <input type="tel" placeholder="Telefon (nepovinné)" style="padding: 15px; border-radius: 10px; border: none; font-size: 1em;">
+                    <select style="padding: 15px; border-radius: 10px; border: none; font-size: 1em;">
+                        <option>Jednostránkový web (4 990 Kč)</option>
+                        <option>Web do 5 stran (9 990 Kč)</option>
+                        <option>E-shop / Premium (19 990 Kč)</option>
+                        <option>Ještě nevím, potřebuji poradit</option>
+                    </select>
+                    <textarea placeholder="Co potřebujete? (nepovinné)" rows="3" style="padding: 15px; border-radius: 10px; border: none; font-size: 1em; resize: vertical;"></textarea>
+                    <button type="submit" style="padding: 18px; background: linear-gradient(135deg, #06b6d4, #0891b2); color: white; border: none; border-radius: 10px; font-size: 1.1em; font-weight: 700; cursor: pointer; transition: transform 0.3s;">Odeslat poptávku →</button>
+                </form>
+            </div>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span>📧</span>
+                    <a href="mailto:hello@komprimai.com">hello@komprimai.com</a>
+                </div>
+                <div class="contact-item">
+                    <span>⏱️</span>
+                    <span>Odpovíme do 2 hodin</span>
+                </div>
+                <div class="contact-item">
+                    <span>⚡</span>
+                    <span>Web do 72 hodin</span>
+                </div>
+            </div>
+            
+            <div style="margin-top: 40px; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 12px;">
+                <p style="font-size: 0.95em; opacity: 0.9;">💡 <strong>Tip:</strong> Nezávazná konzultace je zdarma. Probereme vaše potřeby a doporučíme nejlepší řešení.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 KompriMAI | Moderní weby s AI pro české firmy</p>
+        </div>
+    </footer>
+
+    <!-- AI Chatbot Widget -->
+    <script src="widget.js"></script>
+</body>
+</html>

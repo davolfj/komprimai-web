@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KompriMAI Chatbot - Přímý Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 50px 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        .status {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        
+        .status.ok {
+            background: #dcfce7;
+            color: #166534;
+            border: 2px solid #22c55e;
+        }
+        
+        .status.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 2px solid #ef4444;
+        }
+        
+        .status.warning {
+            background: #fef3c7;
+            color: #92400e;
+            border: 2px solid #f59e0b;
+        }
+        
+        .demo-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .demo-area {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .info-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .info-card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .info-card ul {
+            padding-left: 20px;
+            line-height: 2;
+        }
+        
+        /* Chat Widget Styles */
+        #chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        
+        .chat-button {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.5);
+            transition: transform 0.3s;
+            border: none;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 4px 20px rgba(99, 102, 241, 0.5); }
+            50% { box-shadow: 0 4px 30px rgba(99, 102, 241, 0.8); }
+        }
+        
+        .chat-button:hover {
+            transform: scale(1.1);
+            animation: none;
+        }
+        
+        .proactive-message {
+            position: absolute;
+            bottom: 85px;
+            right: 0;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 18px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            font-size: 14px;
+            color: #1e293b;
+            width: 280px;
+            max-width: 280px;
+            white-space: nowrap;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+            border: 2px solid #6366f1;
+        }
+        
+        .proactive-message::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: 25px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid #6366f1;
+        }
+        
+        .proactive-message.show {
+            display: block;
+        }
+        
+        .proactive-message .close {
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #999;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .chat-window {
+            width: 360px;
+            height: 500px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .chat-window.open {
+            display: flex;
+        }
+        
+        .chat-header {
+            background: linear-gradient(135deg, #6366f1, #764ba2);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chat-header .avatar {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .chat-header .info {
+            flex: 1;
+        }
+        
+        .chat-header .name {
+            font-weight: 700;
+            font-size: 16px;
+        }
+        
+        .chat-header .status {
+            font-size: 13px;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: transparent;
+            border: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8fafc;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .message.bot {
+            flex-direction: row;
+        }
+        
+        .message.user {
+            flex-direction: row-reverse;
+        }
+        
+        .message .bubble {
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .message.bot .bubble {
+            background: white;
+            color: #1e293b;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .message.user .bubble {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .chat-input {
+            padding: 15px 20px;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+        }
+        
+        .chat-input input:focus {
+            border-color: #6366f1;
+        }
+        
+        .chat-input button {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 KompriMAI Chatbot</h1>
+        
+        <div id="status" class="status warning">
+            ⏳ Testovací režim - chatbot běží lokálně bez serveru
+        </div>
+        
+        <div class="demo-area">
+            <div class="info-card">
+                <h2>✅ Co funguje:</h2>
+                <ul>
+                    <li>Vizuální rozhraní chatbota</li>
+                    <li>Otevírání/zavírání okna</li>
+                    <li>Odesílání zpráv</li>
+                    <li>Předpřipravené odpovědi</li>
+                    <li>Ukládání konverzace</li>
+                </ul>
+                <p style="margin-top: 20px; color: #666;">
+                    <strong>Poznámka:</strong> Toto je demo verze. Pro plnou funkčnost s AI je potřeba spustit backend server.
+                </p>
+            </div>
+            
+            <div class="info-card">
+                <h2>📋 Jak testovat:</h2>
+                <ul>
+                    <li>Klikněte na 💬 vpravo dole</li>
+                    <li>Napište: "Ahoj" nebo "Kolik stojí web?"</li>
+                    <li>Chatbot odpoví z předpřipravených odpovědí</li>
+                    <li>Otestujte různé dotazy</li>
+                </ul>
+                <p style="margin-top: 20px; color: #666;">
+                    <strong>Backend:</strong> Pro připojení k OpenAI API je potřeba spustit server (npm start).
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Widget -->
+    <div id="chat-widget">
+        <div class="proactive-message" id="proactiveMsg">
+            <span class="close" onclick="this.parentElement.classList.remove('show')">×</span>
+            <strong>👋 Ahoj!</strong><br>
+            Chcete web do 3 dnů? 😊
+        </div>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <div class="avatar">🤖</div>
+                <div class="info">
+                    <div class="name">KompriMAI Asistent</div>
+                    <div class="status">🟢 Online</div>
+                </div>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    <div class="bubble">
+                        <strong>Ahoj! 👋</strong><br><br>
+                        Jsem AI asistent <strong>KompriMAI</strong>.<br><br>
+                        Pomohu vám s webovými stránkami - ať už potřebujete jednoduchý prezentační web, nebo e-shop s AI funkcemi.<br><br>
+                        Co vás zajímá? 💡
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Napište zprávu..." autocomplete="off">
+                <button id="sendButton">➤</button>
+            </div>
+        </div>
+        <div class="chat-button" id="chatButton">💬</div>
+    </div>
+
+    <script>
+        // Chatbot Logic (Demo verze)
+        const chatButton = document.getElementById('chatButton');
+        const chatWindow = document.getElementById('chatWindow');
+        const chatInput = document.getElementById('chatInput');
+        const sendButton = document.getElementById('sendButton');
+        const chatMessages = document.getElementById('chatMessages');
+
+        // Předpřipravené odpovědi
+        const responses = {
+            'ahoj': 'Ahoj! 👋 Jak vám mohu pomoct s webem?',
+            'dobrý den': 'Dobrý den! 👋 Co pro vás mohu udělat?',
+            'kolik stojí': 'Máme 3 balíčky:\n\n• START: 4 990 Kč (do 72h)\n• BUSINESS: 9 990 Kč (3-5 dnů)\n• PREMIUM: 19 990 Kč (7-10 dnů)\n\nJaký rozpočet plánujete? 💰',
+            'cena': 'Máme 3 balíčky:\n\n• START: 4 990 Kč\n• BUSINESS: 9 990 Kč\n• PREMIUM: 19 990 Kč\n\nVše v ceně: hosting, SSL, AI funkce. Jaký by vám vyhovoval?',
+            'jak dlouho': '⏰ Dodání:\n\n• START: 48-72 hodin\n• BUSINESS: 3-5 dní\n• PREMIUM: 7-10 dní\n\nDaleko rychleji než agentury! Potřebujete to na rychlo?',
+            'web': 'Vytváříme moderní weby s AI pro malé firmy.\n\nCo přesně potřebujete?\n• Jednoduchý prezentační web\n• Web s galerií/službami\n• E-shop\n• Něco jiného?',
+            'ai': 'Naše weby obsahují AI funkce ZDARMA:\n\n🤖 Chatbot (jako já)\n📝 Inteligentní formuláře\n🔍 SEO optimalizace\n📊 Analytics\n\nCo vás zajímá nejvíc?',
+            'konzultace': 'Skvělé! 👍\n\nZanechte mi váš email a ozvu se do 2 hodin s termínem konzultace.\n\nJaký email vám mohu napsat? 📧',
+            'email': 'Děkuji! 📧\n\nVaše zpráva byla uložena. Ozveme se co nejdříve.\n\nChcete ještě něco vědět?',
+            'děkuji': 'Rád jsem pomohl! 😊\n\nKdybyste měli další dotazy, jsem tu pro vás.\n\nMějte hezký den! 👋',
+            'default': 'Dobrý dotaz! 🤔\n\nPro přesnější odpověď bych vás rád přepojil na našeho experta.\n\nZanechte mi email na hello@komprimai.com a ozveme se vám. 📧'
+        };
+
+        // Toggle chat window
+        chatButton.addEventListener('click', () => {
+            chatWindow.classList.toggle('open');
+            if (chatWindow.classList.contains('open')) {
+                chatInput.focus();
+            }
+        });
+
+        // Send message
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+
+            // Add user message
+            addMessage(message, 'user');
+            chatInput.value = '';
+
+            // Get bot response
+            const lowerMsg = message.toLowerCase();
+            let botResponse = responses['default'];
+            
+            for (const [key, value] of Object.entries(responses)) {
+                if (lowerMsg.includes(key)) {
+                    botResponse = value;
+                    break;
+                }
+            }
+
+            // Simulate typing delay
+            setTimeout(() => {
+                addMessage(botResponse, 'bot');
+            }, 1000);
+        }
+
+        // Add message to chat
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.innerHTML = `<div class="bubble">${escapeHtml(text).replace(/\n/g, '<br>')}</div>`;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Event listeners
+        sendButton.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        // Proactive message - show after 5 seconds
+        setTimeout(() => {
+            if (!chatWindow.classList.contains('open')) {
+                document.getElementById('proactiveMsg').classList.add('show');
+            }
+        }, 5000);
+
+        // Hide proactive message when chat is opened
+        chatButton.addEventListener('click', () => {
+            document.getElementById('proactiveMsg').classList.remove('show');
+        });
+
+        // Check server status
+        fetch('http://localhost:3000/api/health')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('status').className = 'status ok';
+                document.getElementById('status').textContent = '✅ Server běží! Chatbot je plně funkční s OpenAI API.';
+            })
+            .catch(error => {
+                console.log('Server není dostupný, používám demo režim');
+            });
+
+        console.log('🤖 KompriMAI Chatbot Demo loaded');
+    </script>
+</body>
+</html>
