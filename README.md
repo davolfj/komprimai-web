@@ -1,2 +1,0 @@
-# komprimai-web
-KompriMAI website
